@@ -4,6 +4,13 @@ cors = require("cors");
 
 let app = express();
 
+
+// Middle ware to have access to the frontend
+app.use(cors());
+app.use(express.json());
+
+
+
 let port = 430;
 
 app.listen(430, (err) => {
@@ -79,6 +86,8 @@ app.get("/table", (req, res) => {
   });
   res.end("Created");
 });
+
+
 
 // add product
 app.post("/add-product", (req, res) => {
@@ -167,4 +176,30 @@ app.post("/add-product", (req, res) => {
   console.log("Data inserted to tables");
 });
 
+// update userName and passWord
 
+app.put('/update',(req,res)=>{
+  console.table(req.body);
+  const {id,UserName,UserPass} =req.body;
+  console.log(id);
+  console.log(UserName);
+  console.log(UserPass);
+
+let updateName = `UPDATE User SET User_name = '${UserName}' WHERE user_id = '${id}'`;
+let UpdatedPassword = `UPDATE User SET User_password = '${UserPass}' WHERE user_id = '${id}'`;
+
+	connection.query(updateName, (err, result) => {
+		if (err) throw err;
+		console.log(result.affectedRows + " record(s) updated");
+		
+	});
+  connection.query(UpdatedPassword, (err, result) => {
+		if (err) throw err;
+		console.log(result.affectedRows + " record(s) updated");
+		
+	});
+
+
+  console.log("updated");
+
+})
